@@ -1,3 +1,5 @@
+#define BLUETOOTH_BAUD_RATE 38400
+
 //From LAB 5 PWM Motor.c.txt
 // Pins for all inputs, keep in mind the PWM defines must be on PWM pins
 #define MotorPWM_A 4 //left motor
@@ -72,4 +74,22 @@ void loop() {
     RPM = count_left*rotation;
     Serial.print("RPM = ");
     Serial.println(RPM);
+
+    if (Serial2.available()){ //send to car
+      char receivedChar = Serial2.read(); // Read the incoming byte
+      Serial.print("Received on Serial2: ");
+      Serial.println(receivedChar); // Print it to the Serial Monitor
+      if(receivedChar == 'F'){
+        
+      }
+      else if(receivedChar == 'B'){
+        
+      }
+    }
+    if (Serial2.available()) {
+      char sentChar = Serial2.read(); // Read the incoming byte
+      Serial.print("Sending to Serial2: ");
+      Serial.println(sentChar);
+      Serial2.write(sentChar); // Send it out through Serial1
+    }
  }
