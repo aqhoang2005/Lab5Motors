@@ -1,75 +1,166 @@
+<<<<<<< Updated upstream
 //From LAB 5 PWM Motor.c.txt
 // Pins for all inputs, keep in mind the PWM defines must be on PWM pins
 #define MotorPWM_A 4 //left motor
 #define MotorPWM_B 5 //right motor
+=======
+#define BLUETOOTH_BAUD_RATE 38400
+
+// Motor pins
+#define MotorPWM_L 4   // left motor PWM
+#define MotorPWM_R 5   // right motor PWM
+>>>>>>> Stashed changes
 #define INA1A 32
 #define INA2A 34
 #define INA1B 30
 #define INA2B 36
 
-//From Lab 5 RPM Encoder.c.txt
-#define ENCODER_LEFT 2  // Motor 1
-#define ENCODER_RIGHT 3 // Motor 2
-static volatile int16_t count_left=0;
-// 3.215 = (60sec/0.1sec)/(48gear ratio * 4pulses/rev)
-float rotation=3.125;  
-float RPM=0;
+// Encoder pins
+#define ENCODER_LEFT  2
+#define ENCODER_RIGHT 3
 
-// Method: Forward
-// Input: speed – value [0-255]
-// Rotate the motor in a clockwise fashion
-void Forward(int speed)
-{
-  analogWrite(MotorPWM_A, speed);
-  analogWrite(MotorPWM_B, speed);
+// ============================
+// Encoder counters
+// ============================
+volatile long count_left = 0;
+volatile long count_right = 0;
 
-  // Left Motor
+// ============================
+// RPM conversion
+// For 100 ms sample time:
+// RPM = counts * 3.125
+// because 60/0.1 / (48*4) = 3.125
+// ============================
+float rotation = 3.125;
+
+// sample time in ms
+const unsigned long sampleTime = 100;
+
+// ============================
+// Interrupt service routines
+// ============================
+void ISRMotorLeft() {
+  count_left++;
+}
+
+void ISRMotorRight() {
+  count_right++;
+}
+
+// ============================
+// Motor control
+// ============================
+void Forward(int speed) {
+  analogWrite(MotorPWM_L, speed);
+  analogWrite(MotorPWM_R, speed);
+
+  // Left motor forward
   digitalWrite(INA1A, HIGH);
   digitalWrite(INA2A, LOW);
 
-  // Right Motor
+  // Right motor forward
   digitalWrite(INA1B, HIGH);
   digitalWrite(INA2B, LOW);
 }
 
-//Method: Drive
-// Input: speed - value[0-255], duration - int for microseconds
-void drive(int speed, int duration) 
-{   digitalWrite(Standby, HIGH); // Turn the motor on
-    if (speed >= 0) forward(speed);
-    else reverse(-speed);
+void Backward(int speed) {
+  analogWrite(MotorPWM_L, speed);
+  analogWrite(MotorPWM_R, speed);
 
-    delay(duration)
+  // Left motor backward
+  digitalWrite(INA1A, LOW);
+  digitalWrite(INA2A, HIGH);
+
+  // Right motor backward
+  digitalWrite(INA1B, LOW);
+  digitalWrite(INA2B, HIGH);
 }
 
-/***************************************/
-// This is the Interrupt Service Routine
-// for the left motor.
-/***************************************/
-void ISRMotorLeft()
-{
-  count_left++;
+void StopMotors() {
+  analogWrite(MotorPWM_L, 0);
+  analogWrite(MotorPWM_R, 0);
+
+  digitalWrite(INA1A, LOW);
+  digitalWrite(INA2A, LOW);
+  digitalWrite(INA1B, LOW);
+  digitalWrite(INA2B, LOW);
 }
 
+//Setup function.
 void setup() {
-  //Motor
-  pinMode(MotorPWM_A, OUTPUT);
-  pinMode(MotorPWM_B, OUTPUT);
+  Serial.begin(9600);
+  Serial2.begin(BLUETOOTH_BAUD_RATE);
+
+  // Motor pins
+  pinMode(MotorPWM_L, OUTPUT);
+  pinMode(MotorPWM_R, OUTPUT);
   pinMode(INA1A, OUTPUT);
   pinMode(INA2A, OUTPUT);
   pinMode(INA1B, OUTPUT);
   pinMode(INA2B, OUTPUT);
 
-  //Encoder
+  // Encoder pins
   pinMode(ENCODER_LEFT, INPUT_PULLUP);
+  pinMode(ENCODER_RIGHT, INPUT_PULLUP);
+
   attachInterrupt(digitalPinToInterrupt(ENCODER_LEFT), ISRMotorLeft, FALLING);
+  attachInterrupt(digitalPinToInterrupt(ENCODER_RIGHT), ISRMotorRight, FALLING);
+
+  StopMotors();
+  delay(1000);
+
+  Serial.println("PWM,RPM_Left,RPM_Right");
+  Serial2.println("PWM,RPM_Left,RPM_Right");
 }
 
-//encoder reading to RPM   
+// ============================
+// Loop
+// ============================
 void loop() {
+<<<<<<< Updated upstream
     count_left=0;
     delay(100);
     RPM = count_left*rotation;
     Serial.print("RPM = ");
     Serial.println(RPM);
  }
+=======
+  if (Serial2.available()) {
+    char cmd = Serial2.read();
+
+    if (cmd == 'F') {
+      Forward(1000);
+    }
+    else if (cmd == 'B') {
+      Backward(1000);
+    }
+    else if (cmd == 'S') {
+      StopMotors();
+    }
+  }
+
+  noInterrupts();
+  long leftCount = count_left;
+  long rightCount = count_right;
+  count_left = 0;
+  count_right = 0;
+  interrupts();
+
+  delay(100);
+
+  float rpmLeft = leftCount * rotation;
+  float rpmRight = rightCount * rotation;
+
+  Serial.print("Left RPM: ");
+  Serial.print(rpmLeft);
+  Serial.print("   Right RPM: ");
+  Serial.println(rpmRight);
+}
+
+//   StopMotors();
+
+//   // stop after one full sweep
+//   while (1) {
+//   }
+// }
+>>>>>>> Stashed changes
