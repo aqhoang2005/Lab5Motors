@@ -125,6 +125,7 @@ void loop() {
     }
     else if (cmd == 'S') {
       StopMotors();
+      for(;;){}//Stop operations
     }
     else if (cmd == 'E'){
       for(int i = 0; i < 255; i += 5){
