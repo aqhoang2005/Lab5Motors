@@ -1,15 +1,12 @@
-<<<<<<< Updated upstream
 //From LAB 5 PWM Motor.c.txt
 // Pins for all inputs, keep in mind the PWM defines must be on PWM pins
 #define MotorPWM_A 4 //left motor
 #define MotorPWM_B 5 //right motor
-=======
 #define BLUETOOTH_BAUD_RATE 38400
 
 // Motor pins
 #define MotorPWM_L 4   // left motor PWM
 #define MotorPWM_R 5   // right motor PWM
->>>>>>> Stashed changes
 #define INA1A 32
 #define INA2A 34
 #define INA1B 30
@@ -117,14 +114,6 @@ void setup() {
 // Loop
 // ============================
 void loop() {
-<<<<<<< Updated upstream
-    count_left=0;
-    delay(100);
-    RPM = count_left*rotation;
-    Serial.print("RPM = ");
-    Serial.println(RPM);
- }
-=======
   if (Serial2.available()) {
     char cmd = Serial2.read();
 
@@ -157,10 +146,22 @@ void loop() {
   Serial.println(rpmRight);
 }
 
-//   StopMotors();
+    if (Serial2.available()){ //send to car
+      char receivedChar = Serial2.read(); // Read the incoming byte
+      Serial.print("Received on Serial2: ");
+      Serial.println(receivedChar); // Print it to the Serial Monitor
+      if(receivedChar == 'F'){
+        
+      }
+      else if(receivedChar == 'B'){
+        
+      }
+    }
+    if (Serial2.available()) {
+      char sentChar = Serial2.read(); // Read the incoming byte
+      Serial.print("Sending to Serial2: ");
+      Serial.println(sentChar);
+      Serial2.write(sentChar); // Send it out through Serial1
+    }
+ }
 
-//   // stop after one full sweep
-//   while (1) {
-//   }
-// }
->>>>>>> Stashed changes
