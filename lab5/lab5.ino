@@ -126,6 +126,12 @@ void loop() {
     else if (cmd == 'S') {
       StopMotors();
     }
+    else if (cmd == 'E'){
+      for(int i = 0; i < 255; i += 5){
+        Forward(i);
+        delay(100);
+      }
+    }
   }
 
   noInterrupts();
