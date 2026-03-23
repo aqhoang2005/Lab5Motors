@@ -29,6 +29,7 @@ volatile long count_right = 0;
 // because 60/0.1 / (48*4) = 3.125
 // ============================
 float rotation = 3.125;
+int pwm = 0;
 
 // sample time in ms
 const unsigned long sampleTime = 100;
@@ -131,8 +132,7 @@ void loop() {
       for(int i = 0; i < 255; i += 5){
         Forward(i);
         delay(100);
-        Serial.print("PWM: ");
-        Serial.print(i);
+        pwm = i;
       }
     }
   }
@@ -149,6 +149,8 @@ void loop() {
   float rpmLeft = leftCount * rotation;
   float rpmRight = rightCount * rotation;
 
+  Serial.print("PWM: ");
+  Serial.print(pwm);
   Serial.print("   Left RPM: ");
   Serial.print(rpmLeft);
   Serial.print("   Right RPM: ");
