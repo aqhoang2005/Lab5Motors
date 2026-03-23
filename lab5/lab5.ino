@@ -131,6 +131,8 @@ void loop() {
       for(int i = 0; i < 255; i += 5){
         Forward(i);
         delay(100);
+        Serial.print("PWM: ");
+        Serial.print(i);
       }
     }
   }
@@ -147,7 +149,7 @@ void loop() {
   float rpmLeft = leftCount * rotation;
   float rpmRight = rightCount * rotation;
 
-  Serial.print("Left RPM: ");
+  Serial.print("   Left RPM: ");
   Serial.print(rpmLeft);
   Serial.print("   Right RPM: ");
   Serial.println(rpmRight);
