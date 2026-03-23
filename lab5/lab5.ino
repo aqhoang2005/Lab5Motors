@@ -146,22 +146,23 @@ void loop() {
   Serial.println(rpmRight);
 }
 
-    if (Serial2.available()){ //send to car
-      char receivedChar = Serial2.read(); // Read the incoming byte
-      Serial.print("Received on Serial2: ");
-      Serial.println(receivedChar); // Print it to the Serial Monitor
-      if(receivedChar == 'F'){
+//     if (Serial2.available()){ //send to car
+//       char receivedChar = Serial2.read(); // Read the incoming byte
+//       Serial.print("Received on Serial2: ");
+//       Serial.println(receivedChar); // Print it to the Serial Monitor
+//       if(receivedChar == 'F'){
         
-      }
-      else if(receivedChar == 'B'){
+//       }
+//       else if(receivedChar == 'B'){
         
-      }
-    }
-    if (Serial2.available()) {
-      char sentChar = Serial2.read(); // Read the incoming byte
-      Serial.print("Sending to Serial2: ");
-      Serial.println(sentChar);
-      Serial2.write(sentChar); // Send it out through Serial1
-    }
- }
+//       }
+//     }
+//     if (Serial2.available()) {
+//       char sentChar = Serial2.read(); // Read the incoming byte
+//       Serial.print("Sending to Serial2: ");
+//       Serial.println(sentChar);
+//       Serial2.write(sentChar); // Send it out through Serial1
+//     }
+//  }
+
 
