@@ -145,7 +145,11 @@ void loop() {
         float rpmLeft = leftCount * rotation;
         float rpmRight = rightCount * rotation;
 
-        Serial.print("PWM: ");
+        Serial.print("Left Count: ");
+        Serial.print(leftCount);
+        Serial.print("   Right Count: ");
+        Serial.print(rightCount);
+        Serial.print("   PWM: ");
         Serial.print(pwm);
         Serial.print("   Left RPM: ");
         Serial.print(rpmLeft);
