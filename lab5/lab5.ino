@@ -133,11 +133,30 @@ void loop() {
         Forward(i);
         delay(100);
         pwm = i;
+        
+        noInterrupts();
+        long leftCount = count_left;
+        long rightCount = count_right;
+        count_left = 0;
+        count_right = 0;
+        interrupts();
+
+        delay(100);
+
+        float rpmLeft = leftCount * rotation;
+        float rpmRight = rightCount * rotation;
+        
+        Serial.print("PWM: ");
+        Serial.print(pwm);
+        Serial.print("   Left RPM: ");
+        Serial.print(rpmLeft);
+        Serial.print("   Right RPM: ");
+        Serial.println(rpmRight);
       }
     }
   }
 
-  noInterrupts();
+  /*noInterrupts();
   long leftCount = count_left;
   long rightCount = count_right;
   count_left = 0;
@@ -154,7 +173,7 @@ void loop() {
   Serial.print("   Left RPM: ");
   Serial.print(rpmLeft);
   Serial.print("   Right RPM: ");
-  Serial.println(rpmRight);
+  Serial.println(rpmRight);*/
 }
 
 //     if (Serial2.available()){ //send to car
