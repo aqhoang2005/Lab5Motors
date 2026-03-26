@@ -116,7 +116,7 @@ void setup() {
 // Loop
 // ============================
 void loop() {
-  
+
   noInterrupts();
   long leftCount = count_left;
   long rightCount = count_right;
@@ -130,7 +130,7 @@ void loop() {
   float rpmRight = rightCount * rotation;
 
   Serial.print("PWM: ");
-  Serial.print(count_PWM[count_left % 5]);
+  Serial.print(count_PWM[count_left]);
   Serial.print("   Left RPM: ");
   Serial.print(rpmLeft);
   Serial.print("   Right RPM: ");
