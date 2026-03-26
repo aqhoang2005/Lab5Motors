@@ -132,6 +132,7 @@ void loop() {
       for(int i = 0; i < 255; i += 5){
         pwm = i;
         Forward(i);
+        delay(100);
       }
     }
   }
