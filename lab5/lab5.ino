@@ -30,6 +30,7 @@ volatile long count_right = 0;
 // ============================
 float rotation = 3.125;
 int pwm = 0;
+int count_PWM[255];
 
 // sample time in ms
 const unsigned long sampleTime = 100;
@@ -133,30 +134,12 @@ void loop() {
         Forward(i);
         delay(100);
         pwm = i;
-        
-        noInterrupts();
-        long leftCount = count_left;
-        long rightCount = count_right;
-        count_left = 0;
-        count_right = 0;
-        interrupts();
-
-        delay(100);
-
-        float rpmLeft = leftCount * rotation;
-        float rpmRight = rightCount * rotation;
-        
-        Serial.print("PWM: ");
-        Serial.print(pwm);
-        Serial.print("   Left RPM: ");
-        Serial.print(rpmLeft);
-        Serial.print("   Right RPM: ");
-        Serial.println(rpmRight);
+        count_PWM[i] = pwm;
       }
     }
   }
 
-  /*noInterrupts();
+  noInterrupts();
   long leftCount = count_left;
   long rightCount = count_right;
   count_left = 0;
@@ -169,11 +152,11 @@ void loop() {
   float rpmRight = rightCount * rotation;
 
   Serial.print("PWM: ");
-  Serial.print(pwm);
+  Serial.print(count_PWM[count_left % 5]);
   Serial.print("   Left RPM: ");
   Serial.print(rpmLeft);
   Serial.print("   Right RPM: ");
-  Serial.println(rpmRight);*/
+  Serial.println(rpmRight);
 }
 
 //     if (Serial2.available()){ //send to car
