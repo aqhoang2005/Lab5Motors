@@ -118,21 +118,20 @@ void loop() {
   if (Serial2.available()) {
     char cmd = Serial2.read();
 
-    if (cmd == 'F') {
+    if (cmd == 'F') { //move forward
       Forward(1000);
     }
-    else if (cmd == 'B') {
+    else if (cmd == 'B') { //move backward
       Backward(1000);
     }
-    else if (cmd == 'S') {
+    else if (cmd == 'S') { //stop motor and stop print operation
       StopMotors();
       for(;;){}//Stop operations
     }
-    else if (cmd == 'E'){
+    else if (cmd == 'E'){ //excel graph function
       for(int i = 0; i < 260; i += 5){
         pwm = i;
         Forward(i);
-        //delay(100);
 
         noInterrupts();
         long leftCount = count_left;
@@ -156,24 +155,3 @@ void loop() {
     }
   }
 }
-
-//     if (Serial2.available()){ //send to car
-//       char receivedChar = Serial2.read(); // Read the incoming byte
-//       Serial.print("Received on Serial2: ");
-//       Serial.println(receivedChar); // Print it to the Serial Monitor
-//       if(receivedChar == 'F'){
-        
-//       }
-//       else if(receivedChar == 'B'){
-        
-//       }
-//     }
-//     if (Serial2.available()) {
-//       char sentChar = Serial2.read(); // Read the incoming byte
-//       Serial.print("Sending to Serial2: ");
-//       Serial.println(sentChar);
-//       Serial2.write(sentChar); // Send it out through Serial1
-//     }
-//  }
-
-
